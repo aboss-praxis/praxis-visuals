@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disability Inclusion Value Chain — ProAbled</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f1f5f9; padding: 28px; }
+  h1 { font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 3px; }
+  .sub { font-size: 12px; color: #94a3b8; margin-bottom: 18px; }
+  .wrap { background: white; border-radius: 14px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+  svg { width: 100%; height: auto; display: block; }
+  .legend { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 14px; padding: 0 2px; }
+  .li { display: flex; align-items: center; gap: 7px; font-size: 11.5px; color: #475569; }
+  .dot { width: 16px; height: 9px; border-radius: 3px; flex-shrink: 0; }
+  #tip { position: fixed; background: #0f172a; color: #e2e8f0; padding: 10px 13px; border-radius: 8px; font-size: 12px; max-width: 250px; line-height: 1.55; pointer-events: none; opacity: 0; transition: opacity .15s; z-index: 999; box-shadow: 0 4px 20px rgba(0,0,0,0.35); }
+  #tip b { color: #fff; display: block; margin-bottom: 4px; font-size: 12.5px; }
+</style>
+</head>
+<body>
+<h1>Disability Inclusion Value Chain</h1>
+<p class="sub">ProAbled Design Session - June 16, 2026 - Hover nodes for gap analysis</p>
+<div class="wrap"><svg id="g" viewBox="0 0 1100 640"></svg></div>
+<div class="legend">
+  <div class="li"><div class="dot" style="background:#16a34a"></div>Covered</div>
+  <div class="li"><div class="dot" style="background:#d97706"></div>Gap in some countries</div>
+  <div class="li"><div class="dot" style="background:#dc2626"></div>Full gap everywhere</div>
+  <div class="li"><div class="dot" style="background:#4f46e5"></div>Central goal</div>
+</div>
+<div id="tip"></div>
+<script>
+const NS='http://www.w3.org/2000/svg',g=document.getElementById('g'),tip=document.getElementById('tip');
+const C={covered:{fill:'#dcfce7',stroke:'#16a34a',text:'#14532d'},partial:{fill:'#fef3c7',stroke:'#d97706',text:'#92400e'},gap:{fill:'#fee2e2',stroke:'#dc2626',text:'#7f1d1d'},goal:{fill:'#ede9fe',stroke:'#4f46e5',text:'#1e1b4b'}};
+const nodes=[
+  {id:'src',x:75,y:100,label:['Source','PWDs'],status:'covered',w:130,h:54,tip:'<b>Source PWDs</b>Covered. ProAbled: 3,000+ vetted candidates. NGOs and govt programs well-established across MENA.'},
+  {id:'trn',x:250,y:100,label:['Train and','Prep PWDs'],status:'covered',w:130,h:54,tip:'<b>Train and Prep PWDs</b>Covered. Vocational training via NGOs, govt programs, ProAbled coaching. Generally available.'},
+  {id:'plc',x:420,y:100,label:['Place PWDs','(at scale)'],status:'partial',w:135,h:54,tip:'<b>Place PWDs at Scale</b>Gap at scale. Works today in small volumes through ProAbled. Efficiently connecting vetted candidates to inclusive employers at scale is unsolved.'},
+  {id:'emp',x:622,y:315,label:['INCLUSIVE','EMPLOYER'],status:'goal',w:142,h:74,large:true,tip:'<b>Inclusive Employer</b>Central goal. Verified accessible workplace, inclusive trained staff, active PWD hiring practices, recognized brand.'},
+  {id:'inc',x:75,y:495,label:['Generate','Demand Incentive'],status:'gap',w:130,h:54,tip:'<b>Generate Demand Incentive</b>Full gap everywhere. Beyond compliance requirements, companies have no economic motive to invest in inclusion. Creating consumer demand is the core missing driver.'},
+  {id:'acc',x:258,y:455,label:['Upfront Cost:','Physical Access'],status:'partial',w:142,h:54,tip:'<b>Physical Accessibility Cost</b>Gap in most countries. UAE: govt mandates and fines ($20-30K for non-compliance). Lebanon: ~$45K/property with no funding mechanism. Difficult to donor-fund.'},
+  {id:'hr',x:258,y:535,label:['Upfront Cost:','Staff Training and HR'],status:'gap',w:142,h:54,tip:'<b>Staff Training and HR Practices</b>Full gap everywhere. Companies only pay compliance minimum. Grant ceiling ~$3K (PepsiCo) to ~$50K (Diageo). Must be cross-subsidized by marketplace revenue.'},
+  {id:'rec',x:435,y:495,label:['Recruit and','Hire PWDs'],status:'partial',w:130,h:54,tip:'<b>Recruit and Hire PWDs</b>Gap at scale. ProAbled and NGOs facilitate today. Employers lack efficient access to vetted PWD talent pools. Cultural barriers remain in some markets.'},
+  {id:'cacc',x:832,y:200,label:['Consumer Accessibility','Verification'],status:'partial',w:155,h:54,tip:'<b>Consumer Accessibility Verification</b>Gap in most countries. All major booking platforms rely on self-assessment only. No MENA-wide independent platform for inclusive company accreditation. UAE has govt accreditation for physical access only. Key differentiator: verified labels.'},
+  {id:'rch',x:1038,y:200,label:['Reach PWD','Purchasing Power'],status:'gap',w:135,h:54,tip:'<b>Reach PWD Purchasing Power and Allies</b>Full gap. No verified inclusive label exists. No trusted distribution channel to PWD community at scale. WhatsApp social commerce is the leading hypothesis.'}
+];
+function mk(tag,a,txt){const e=document.createElementNS(NS,tag);for(const[k,v]of Object.entries(a))e.setAttribute(k,v);if(txt!==undefined)e.textContent=txt;return e;}
+const defs=mk('defs',{});[['ag','#94a3b8'],['ai','#4f46e5']].forEach(([id,col])=>{const m=mk('marker',{id,markerWidth:'9',markerHeight:'6',refX:'8',refY:'3',orient:'auto'});m.appendChild(mk('polygon',{points:'0 0,9 3,0 6',fill:col}));defs.appendChild(m);});g.appendChild(defs);
+function zone(x,y,w,h){const r=mk('rect',{x,y,width:w,height:h,rx:'10',fill:'#f8fafc',stroke:'#e2e8f0','stroke-width':'1'});g.appendChild(r);}
+zone(16,42,544,118);zone(16,415,562,196);zone(758,150,355,114);
+function zlabel(x,y,txt){g.appendChild(mk('text',{x,y,fill:'#94a3b8','font-size':'9','font-weight':'700','letter-spacing':'1.2','font-family':'system-ui,sans-serif'},txt));}
+zlabel(25,57,'PATH 1 - PWD SUPPLY CHAIN');zlabel(25,430,'PATH 2 - EMPLOYER ENABLEMENT');zlabel(766,165,'PATH 3 - CONSUMER');
+function arr(d){const p=mk('path',{d,stroke:'#94a3b8','stroke-width':'1.8',fill:'none','marker-end':'url(#ag)'});g.appendChild(p);}
+arr('M 141 100 L 182 100');arr('M 316 100 L 350 100');arr('M 490 100 C 535 100 562 205 580 277');arr('M 142 483 C 165 470 182 462 185 460');arr('M 142 507 C 165 520 182 530 185 533');arr('M 332 455 C 358 468 375 476 378 482');arr('M 332 535 C 358 522 375 512 378 506');arr('M 503 495 C 542 488 567 415 581 357');arr('M 695 292 C 732 260 762 228 758 218');arr('M 905 200 L 953 200');
+const sh=mk('path',{d:'M 258 430 C 258 340 440 278 600 258',stroke:'#cbd5e1','stroke-width':'1.2',fill:'none','stroke-dasharray':'3,4'});g.appendChild(sh);
+g.appendChild(mk('text',{x:392,y:300,fill:'#94a3b8','font-size':'8.5','font-style':'italic','text-anchor':'middle','font-family':'system-ui,sans-serif'},'shared accessibility investment'));
+nodes.forEach(node=>{const c=C[node.status],hw=node.w/2,hh=node.h/2,grp=mk('g',{style:'cursor:pointer'});grp.appendChild(mk('rect',{x:node.x-hw+2,y:node.y-hh+3,width:node.w,height:node.h,rx:'9',fill:'rgba(0,0,0,0.07)'}));grp.appendChild(mk('rect',{x:node.x-hw,y:node.y-hh,width:node.w,height:node.h,rx:'9',fill:c.fill,stroke:c.stroke,'stroke-width':node.large?'2.5':'1.8'}));grp.appendChild(mk('rect',{x:node.x-hw,y:node.y-hh,width:node.w,height:'5',rx:'9',fill:c.stroke}));grp.appendChild(mk('rect',{x:node.x-hw,y:node.y-hh+3,width:node.w,height:'3',fill:c.stroke}));node.label.forEach((line,i)=>{const n=node.label.length,off=n===1?0:(i-(n-1)/2)*15;grp.appendChild(mk('text',{x:node.x,y:node.y+off+(node.large?5:4),'text-anchor':'middle','dominant-baseline':'middle',fill:c.text,'font-size':node.large?'12.5':'11','font-weight':node.large?'800':'600','font-family':'system-ui,sans-serif'},line));});grp.addEventListener('mouseenter',e=>{tip.innerHTML=node.tip;tip.style.opacity='1';mv(e);});grp.addEventListener('mousemove',mv);grp.addEventListener('mouseleave',()=>tip.style.opacity='0');g.appendChild(grp);});
+function mv(e){let x=e.clientX+14,y=e.clientY-14;if(x+260>window.innerWidth)x=e.clientX-265;if(y+90>window.innerHeight)y=e.clientY-95;tip.style.left=x+'px';tip.style.top=y+'px';}
+</script>
+</body>
+</html>
